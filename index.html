@@ -3,274 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Max Ricci - Design & Visual Experimentation</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Courier New', monospace;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.6;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: #0a0a0a;
-            padding: 2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 1px solid #333;
-        }
-
-        .logo {
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #e0e0e0;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #e0e0e0;
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 5%;
-            border-bottom: 1px solid #333;
-        }
-
-        .hero h1 {
-            font-size: 5rem;
-            font-weight: 400;
-            margin-bottom: 2rem;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            line-height: 0.9;
-        }
-
-        .hero .subtitle {
-            font-size: 1rem;
-            color: #888;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 3rem;
-            font-family: 'Courier New', monospace;
-        }
-
-        .hero-meta {
-            display: flex;
-            gap: 4rem;
-            font-size: 0.85rem;
-            color: #666;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .hero-meta div {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .hero-meta span {
-            color: #e0e0e0;
-        }
-
-        .projects-section {
-            padding: 8rem 5%;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #333;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .section-number {
-            font-size: 0.85rem;
-            color: #666;
-            letter-spacing: 1px;
-        }
-
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-
-        .project-item {
-            padding: 3rem 0;
-            border-bottom: 1px solid #1a1a1a;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: grid;
-            grid-template-columns: 60px 1fr 200px 100px;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .project-item:hover {
-            padding-left: 2rem;
-            border-bottom-color: #333;
-        }
-
-        .project-number {
-            font-size: 0.85rem;
-            color: #666;
-            letter-spacing: 1px;
-        }
-
-        .project-title {
-            font-size: 2rem;
-            font-weight: 400;
-            letter-spacing: 0px;
-            text-transform: uppercase;
-        }
-
-        .project-description {
-            font-size: 0.85rem;
-            color: #888;
-            letter-spacing: 0.5px;
-        }
-
-        .project-year {
-            font-size: 0.85rem;
-            color: #666;
-            text-align: right;
-            letter-spacing: 1px;
-        }
-
-        .project-visual {
-            position: fixed;
-            top: 50%;
-            right: 5%;
-            transform: translateY(-50%);
-            width: 400px;
-            height: 500px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-        }
-
-        .footer {
-            padding: 4rem 5%;
-            border-top: 1px solid #333;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: #666;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 1024px) {
-            .project-visual {
-                display: none;
-            }
-
-            .project-item {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                padding: 2rem 0;
-            }
-
-            .project-year {
-                text-align: left;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .hero-meta {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .nav-links {
-                gap: 1.5rem;
-            }
-
-            .nav-links a {
-                font-size: 0.75rem;
-            }
-
-            .footer {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-    </style>
+    <title>Max Ricci - Portofolio 2025</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
         <div class="logo">Max Ricci</div>
         <ul class="nav-links">
             <li><a href="#work">Work</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="about.html">About Max</a></li>
+            <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
 
     <section class="hero">
-        <h1>DESIGN<br>& VISUAL<br>EXPERIMENTATION</h1>
+        <h1>PERSONAL PORTFOLIO<br>INDUSTRIAL DESIGN<br>2025-2026</h1>
         <div class="subtitle">Portfolio 2025</div>
         <div class="hero-meta">
             <div>
@@ -319,29 +66,136 @@
     </section>
 
     <div class="project-visual" id="projectVisual"></div>
-
-    <footer class="footer">
-        <div>© 2025 Max Ricci</div>
-        <div>Lugano, Switzerland</div>
-    </footer>
-
     <script>
-        const projects = document.querySelectorAll('.project-item');
-        const visual = document.getElementById('projectVisual');
+        (function(){
+            const projects = document.querySelectorAll('.project-item');
+            const visual = document.getElementById('projectVisual');
 
-        projects.forEach((project, i) => {
-            project.addEventListener('mouseenter', () => {
-                if (window.innerWidth > 1024) {
-                    visual.style.opacity = '1';
-                    const icons = ['🕒', '🏛️', '✨'];
-                    visual.textContent = icons[i];
+            // Basic hover preview (keeps previous behavior)
+            projects.forEach((project, i) => {
+                project.addEventListener('mouseenter', () => {
+                    if (window.innerWidth > 1024) {
+                        visual.style.opacity = '1';
+                        const icons = ['🕒', '🏛️', '✨'];
+                        visual.textContent = icons[i] || '';
+                    }
+                });
+
+                project.addEventListener('mouseleave', () => {
+                    visual.style.opacity = '0';
+                });
+
+                project.addEventListener('click', () => openProjectModal(i));
+            });
+
+            // Project data (titles/descriptions from DOM for reliability)
+            const projectData = Array.from(projects).map((el, i) => ({
+                index: i,
+                title: el.querySelector('.project-title')?.textContent || ('Project ' + (i+1)),
+                description: el.querySelector('.project-description')?.textContent || '',
+                // image prefix to look for in /images — convention: project-01-1.jpg
+                imagePrefix: `project-${String(i+1).padStart(2,'0')}`
+            }));
+
+            // Modal elements
+            const modalOverlay = document.getElementById('projectModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+            const modalClose = document.getElementById('modalClose');
+            const modalFooter = document.getElementById('modalFooter');
+            const carouselImage = document.getElementById('carouselImage');
+            const carouselEmpty = document.getElementById('carouselEmpty');
+            const prevBtn = document.getElementById('carouselPrev');
+            const nextBtn = document.getElementById('carouselNext');
+
+            let currentImages = [];
+            let currentIndex = 0;
+
+            function openProjectModal(i){
+                const data = projectData[i];
+                modalTitle.textContent = data.title;
+                modalDesc.textContent = data.description;
+                modalFooter.textContent = `${data.title} • ${data.index+1}`;
+                modalOverlay.classList.add('active');
+                // try load images matching prefix, up to 6
+                loadImagesForProject(data.imagePrefix, 6, (imgs) => {
+                    currentImages = imgs;
+                    currentIndex = 0;
+                    if (currentImages.length){
+                        carouselEmpty.style.display = 'none';
+                        carouselImage.style.display = '';
+                        carouselImage.src = currentImages[0];
+                    } else {
+                        carouselImage.style.display = 'none';
+                        carouselEmpty.style.display = '';
+                    }
+                });
+                // focus trap optional: focus close button
+                modalClose.focus();
+            }
+
+            function closeModal(){
+                modalOverlay.classList.remove('active');
+                carouselImage.src = '';
+                currentImages = [];
+            }
+
+            modalClose.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', (e)=>{
+                if (e.target === modalOverlay) closeModal();
+            });
+
+            // keyboard support
+            document.addEventListener('keydown', (e)=>{
+                if (!modalOverlay.classList.contains('active')) return;
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'ArrowLeft') showPrev();
+                if (e.key === 'ArrowRight') showNext();
+            });
+
+            prevBtn.addEventListener('click', showPrev);
+            nextBtn.addEventListener('click', showNext);
+
+            function showPrev(){
+                if (!currentImages.length) return;
+                currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                carouselImage.src = currentImages[currentIndex];
+            }
+
+            function showNext(){
+                if (!currentImages.length) return;
+                currentIndex = (currentIndex + 1) % currentImages.length;
+                carouselImage.src = currentImages[currentIndex];
+            }
+
+            // Attempt to load images with a naming convention: images/{prefix}-{n}.jpg
+            function loadImagesForProject(prefix, maxCount, cb){
+                const loaded = [];
+                let checked = 0;
+                const ext = ['jpg','png'];
+                function tryNext(n){
+                    if (n > maxCount){
+                        cb(loaded);
+                        return;
+                    }
+                    // try each extension for this index
+                    let extIndex = 0;
+                    function tryExt(){
+                        if (extIndex >= ext.length){
+                            // none for this n
+                            checked++;
+                            tryNext(n+1);
+                            return;
+                        }
+                        const url = `images/${prefix}-${n}.${ext[extIndex]}`;
+                        const img = new Image();
+                        img.onload = ()=>{ loaded.push(url); checked++; tryNext(n+1); };
+                        img.onerror = ()=>{ extIndex++; tryExt(); };
+                        img.src = url;
+                    }
+                    tryExt();
                 }
-            });
-
-            project.addEventListener('mouseleave', () => {
-                visual.style.opacity = '0';
-            });
-        });
+                tryNext(1);
+            }
+        })();
     </script>
-</body>
-</html>
