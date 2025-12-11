@@ -66,6 +66,29 @@
     </section>
 
     <div class="project-visual" id="projectVisual"></div>
+
+    <!-- Project modal (hidden until opened) -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle"></div>
+                <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="carousel" id="modalCarousel">
+                    <button class="nav prev" id="carouselPrev">‹</button>
+                    <img id="carouselImage" src="" alt="Project image">
+                    <button class="nav next" id="carouselNext">›</button>
+                    <div class="carousel-empty" id="carouselEmpty" style="display:none;color:#888;">Images will be added later.</div>
+                </div>
+                <aside class="modal-side">
+                    <div class="desc" id="modalDesc"></div>
+                </aside>
+            </div>
+            <div class="modal-footer" id="modalFooter">Project details</div>
+        </div>
+    </div>
+
     <script>
         (function(){
             const projects = document.querySelectorAll('.project-item');
@@ -108,62 +131,70 @@
             const prevBtn = document.getElementById('carouselPrev');
             const nextBtn = document.getElementById('carouselNext');
 
+            if (!modalOverlay || !modalTitle) {
+                console.error('Modal elements not found — modal markup may be missing');
+            }
+
             let currentImages = [];
             let currentIndex = 0;
 
             function openProjectModal(i){
-                const data = projectData[i];
-                modalTitle.textContent = data.title;
-                modalDesc.textContent = data.description;
-                modalFooter.textContent = `${data.title} • ${data.index+1}`;
-                modalOverlay.classList.add('active');
-                // try load images matching prefix, up to 6
-                loadImagesForProject(data.imagePrefix, 6, (imgs) => {
-                    currentImages = imgs;
-                    currentIndex = 0;
-                    if (currentImages.length){
-                        carouselEmpty.style.display = 'none';
-                        carouselImage.style.display = '';
-                        carouselImage.src = currentImages[0];
-                    } else {
-                        carouselImage.style.display = 'none';
-                        carouselEmpty.style.display = '';
-                    }
-                });
-                // focus trap optional: focus close button
-                modalClose.focus();
+                try {
+                    const data = projectData[i];
+                    if (!modalTitle || !modalOverlay) throw new Error('Modal missing');
+                    modalTitle.textContent = data.title;
+                    modalDesc.textContent = data.description;
+                    modalFooter.textContent = `${data.title} • ${data.index+1}`;
+                    modalOverlay.classList.add('active');
+                    // try load images matching prefix, up to 6
+                    loadImagesForProject(data.imagePrefix, 6, (imgs) => {
+                        currentImages = imgs;
+                        currentIndex = 0;
+                        if (currentImages.length){
+                            if (carouselEmpty) carouselEmpty.style.display = 'none';
+                            if (carouselImage) { carouselImage.style.display = ''; carouselImage.src = currentImages[0]; }
+                        } else {
+                            if (carouselImage) carouselImage.style.display = 'none';
+                            if (carouselEmpty) carouselEmpty.style.display = '';
+                        }
+                    });
+                    if (modalClose) modalClose.focus();
+                } catch (err) {
+                    console.error('Failed to open project modal', err);
+                }
             }
 
             function closeModal(){
+                if (!modalOverlay) return;
                 modalOverlay.classList.remove('active');
-                carouselImage.src = '';
+                if (carouselImage) carouselImage.src = '';
                 currentImages = [];
             }
 
-            modalClose.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', (e)=>{
+            if (modalClose) modalClose.addEventListener('click', closeModal);
+            if (modalOverlay) modalOverlay.addEventListener('click', (e)=>{
                 if (e.target === modalOverlay) closeModal();
             });
 
             // keyboard support
             document.addEventListener('keydown', (e)=>{
-                if (!modalOverlay.classList.contains('active')) return;
+                if (!modalOverlay || !modalOverlay.classList.contains('active')) return;
                 if (e.key === 'Escape') closeModal();
                 if (e.key === 'ArrowLeft') showPrev();
                 if (e.key === 'ArrowRight') showNext();
             });
 
-            prevBtn.addEventListener('click', showPrev);
-            nextBtn.addEventListener('click', showNext);
+            if (prevBtn) prevBtn.addEventListener('click', showPrev);
+            if (nextBtn) nextBtn.addEventListener('click', showNext);
 
             function showPrev(){
-                if (!currentImages.length) return;
+                if (!currentImages.length || !carouselImage) return;
                 currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
                 carouselImage.src = currentImages[currentIndex];
             }
 
             function showNext(){
-                if (!currentImages.length) return;
+                if (!currentImages.length || !carouselImage) return;
                 currentIndex = (currentIndex + 1) % currentImages.length;
                 carouselImage.src = currentImages[currentIndex];
             }
@@ -171,25 +202,21 @@
             // Attempt to load images with a naming convention: images/{prefix}-{n}.jpg
             function loadImagesForProject(prefix, maxCount, cb){
                 const loaded = [];
-                let checked = 0;
                 const ext = ['jpg','png'];
                 function tryNext(n){
                     if (n > maxCount){
                         cb(loaded);
                         return;
                     }
-                    // try each extension for this index
                     let extIndex = 0;
                     function tryExt(){
                         if (extIndex >= ext.length){
-                            // none for this n
-                            checked++;
                             tryNext(n+1);
                             return;
                         }
                         const url = `images/${prefix}-${n}.${ext[extIndex]}`;
                         const img = new Image();
-                        img.onload = ()=>{ loaded.push(url); checked++; tryNext(n+1); };
+                        img.onload = ()=>{ loaded.push(url); tryNext(n+1); };
                         img.onerror = ()=>{ extIndex++; tryExt(); };
                         img.src = url;
                     }
@@ -199,3 +226,10 @@
             }
         })();
     </script>
+    <footer class="footer">
+        <div>© 2025 Max Ricci</div>
+        <div>Lugano, Switzerland</div>
+    </footer>
+
+</body>
+</html>
